@@ -4,11 +4,15 @@ class Spelling
 
   def initialize(file_name)
     if File.file?(file_name)
-      process_file(file_name)
-      process_blocks
+      @file_name = file_name
     else
       puts "Invalid file"
     end
+  end
+
+  def run
+    process_file
+    process_blocks
   end
 
   def process_blocks
@@ -39,11 +43,11 @@ class Spelling
     count
   end
 
-  def process_file(file_name)
+  def process_file
     counter = 0
     @blocks = []
     current_case = []
-    File.open(file_name, "rb").each do |line|
+    File.open(@file_name, "rb").each do |line|
       if (counter == 0)
         @cases = Integer(line)
       else
@@ -67,4 +71,5 @@ end
 
 ARGV.each do |file_name|
   spelling = Spelling.new(file_name)
+  spelling.run
 end
