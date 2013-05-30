@@ -5,7 +5,7 @@ class Spelling
   def initialize(file_name)
     if File.file?(file_name)
       process_file(file_name)
-      process_blocks
+      puts "Winner! #{ process_blocks }"
     else
       puts "Invalid file"
     end
@@ -14,11 +14,27 @@ class Spelling
   def process_blocks
     @blocks.each do |block|
       comparison = block[0]
-      correct = (lcs(block[0], block[1]) > lcs(block[0], block[2])) ? block[1] : block[2]
+      (lcs(block[0], block[1]) > lcs(block[0], block[2])) ? block[1] : block[2]
+    end
   end
 
   def lcs(input, hypothesis)
-
+    count = 0
+    substring_index = 0
+    matching = ""
+    for i in 0...input.length
+      for h in substring_index...hypothesis.length
+        if input[i] == hypothesis[h]
+          count += 1
+          matching += input[i]
+          substring_index = h+1
+          break
+        end
+      end
+    end
+    puts count
+    puts matching
+    count
   end
 
   def process_file(file_name)
