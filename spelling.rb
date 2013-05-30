@@ -5,16 +5,18 @@ class Spelling
   def initialize(file_name)
     if File.file?(file_name)
       process_file(file_name)
-      puts "Winner! #{ process_blocks }"
+      process_blocks
     else
       puts "Invalid file"
     end
   end
 
   def process_blocks
-    @blocks.each do |block|
-      comparison = block[0]
-      (lcs(block[0], block[1]) > lcs(block[0], block[2])) ? block[1] : block[2]
+    File.open('OUTPUT.txt', 'wb') do |file|
+      @blocks.each do |block|
+        comparison = block[0]
+        file << ((lcs(block[0], block[1]) > lcs(block[0], block[2])) ? block[1] : block[2]) + "\n"
+      end
     end
   end
 
@@ -32,8 +34,8 @@ class Spelling
         end
       end
     end
-    puts count
-    puts matching
+    #puts count
+    #puts matching
     count
   end
 
@@ -42,9 +44,7 @@ class Spelling
     @blocks = []
     current_case = []
     File.open(file_name, "rb").each do |line|
-      puts line
       if (counter == 0)
-        puts line
         @cases = Integer(line)
       else
         if line.strip == ""
@@ -61,8 +61,6 @@ class Spelling
     if (current_case.length == 3)
       @blocks << current_case
     end
-    puts "cases: " + @cases.to_s
-    puts @blocks.inspect
   end
 
 end
